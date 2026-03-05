@@ -6,6 +6,30 @@ from unwrap.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from unwrap.models import User, Products, Cart
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func, update
+from .forms import ProductForm
+from functools import wraps
+from flask import abort
+from functools import wraps
+
+
+
+
+
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_admin:
+            flash("Only superuser can create products.", "danger")
+            return redirect(url_for("select_products"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+
+
+
 
 def getLoginDetails():
     if current_user.is_authenticated:
@@ -15,11 +39,19 @@ def getLoginDetails():
     return noOfItems
 
 
+
+
+
+
 @app.route("/")
 @app.route("/home")
 def home():
     noOfItems = getLoginDetails()
     return render_template('home.html', noOfItems=noOfItems)
+
+
+
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -36,13 +68,19 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+
+
+
+@app.route("/login/", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        print("$$$$$$$$$$$$")
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
+        print("%%%%%%%%%%%%****************")
         user = User.query.filter_by(email=form.email.data).first()
+        print("##########")
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get("next")
@@ -51,10 +89,19 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
+
+
+
+
+
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+
+
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -74,15 +121,25 @@ def account():
     return render_template('account.html', title='Account',
                            form=form)
 
+
+
+
+
 @app.route("/unwrap-project")
 def unwrap_project():
     noOfItems = getLoginDetails()
     return render_template("unwrap-project.html", title='The project', noOfItems=noOfItems)
 
 
+
+
+
 @app.route("/how-it-works")
 def how_it_works():
      return render_template("how-it-works.html", title='How it works')
+
+
+
 
 
 @app.route("/select_products", methods=['GET', 'POST'])
@@ -93,13 +150,13 @@ def select_products():
 
 
 
+
+
 @app.route("/addToCart/<int:product_id>")
 @login_required
 def addToCart(product_id):
-    # check if product is already in cart
     row = Cart.query.filter_by(product_id=product_id, buyer=current_user).first()
     if row:
-        # if in cart update quantity : +1
         row.quantity += 1
         db.session.commit()
         flash('This item is already in your cart, 1 quantity added!', 'success')
@@ -111,11 +168,12 @@ def addToCart(product_id):
     return redirect(url_for('select_products'))
 
 
+
+
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
 def cart():
     noOfItems = getLoginDetails()
-    # display items in cart
     cart = Products.query.join(Cart).add_columns(Cart.quantity, Products.price, Products.name, Products.id).filter_by(buyer=current_user).all()
     subtotal = 0
     for item in cart:
@@ -133,6 +191,9 @@ def cart():
             subtotal+=int(item.price)*int(item.quantity)
     return render_template('cart.html', cart=cart, noOfItems=noOfItems, subtotal=subtotal)
 
+
+
+
 @app.route("/removeFromCart/<int:product_id>")
 @login_required
 def removeFromCart(product_id):
@@ -141,3 +202,27 @@ def removeFromCart(product_id):
     db.session.commit()
     flash('Your item has been removed from your cart!', 'success')
     return redirect(url_for('cart'))
+
+
+
+
+@app.route("/add_product", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_product():
+    form = ProductForm()
+    if form.validate_on_submit():
+        product = Products(
+            name=form.name.data,
+            price=form.price.data,
+            description=form.description.data
+        )
+        db.session.add(product)
+        db.session.commit()
+        flash('Product added successfully!', 'success')
+        return redirect(url_for('select_products'))
+    return render_template('add_product.html', form=form)
+
+
+
+

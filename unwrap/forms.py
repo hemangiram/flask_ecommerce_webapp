@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from unwrap.models import User
 
@@ -21,6 +21,9 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError("That email is taken. Please choose a different one")
+
+
+
 
 
 class LoginForm(FlaskForm):
@@ -44,3 +47,15 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
+
+
+
+
+
+
+class ProductForm(FlaskForm):
+    name = StringField('product name', validators=[DataRequired()])
+    price =IntegerField('price', validators=[DataRequired()])
+    description = TextAreaField('description', validators=[DataRequired()]) # type: ignore
+    submit = SubmitField('add product')
+

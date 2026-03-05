@@ -1,57 +1,98 @@
 {% extends "layout.html" %}
-
-
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <h1>The Unwrap Project</h1>
-        <img src="/static/pic1.jpg" class="d-block w-100" alt="...">
-        <h1>
-            <p>We grew up with the wrong recycling idea!</p>
-        </h1>
-        <h3><p>Our health and our bay are in danger. Plastic is toxic. </p></h3>
-
-        <p>Every piece of plastic ever produced is still here, on landfills, in the ocean, but also in the air we breath, the water we drink, in the animals and plants we eat and the ground we leave on. </p>
-        
-        <div>  
-        <img width="100%" src= "{{ url_for('static', filename='pic8.JPG') }}"  />
-        </div>
-        <div >  
-        <h1>
-            <p >So let's act and reduce our plastic consumption!</p>
-        </h1>
-        </div>
-        <p>Our goal is to ease the transition to a plastic-free living in the great LA area. Our solution is to offer alternatives to our community and partner with brands that want and are ready to give alternatives.</p>
-        <p>We want to keep it <b> easy, clean and accessible.</b> Our First step is Refill@home. A customizable "box" of locally made products in locally made containers that we can refill. Our ultimate goal is to open a physical spot in LA for plastic concerned customers. </p>
-
-<!--TODO-->
-      
-        <h1>
-        <p>Our Partners</p>
-        </h1>
-        <h5>
-        <p>We’ve talked to many suppliers and curated the ones that had both great products and the will to sell in bulk to reduce packaging. </p>
-        </h5>
-        <h4><b>Our partners are curated through 4 main criteria:</b></h4>
-
-            
-
-
-
-        <ul style="list-style-type:none;">
-            <li>Sustainable materials/ingredients</li>
-            <li>Great quality</li>
-            <li>Packaged-free (supplied in bulk) or at least plastic-free</li>
-            <li>Local first</li>
-        </ul>
-
-        <!-- <h1>
-            <p>The Founders</p>
-        </h1> -->
+<!-- HERO SECTION -->
+<section class="text-center mb-5">
+    <div class="container">
+        <h1 class="display-4 font-weight-bold mb-3">The Unwrap Project </h1>
+        <p class="lead text-muted">
+            Rethinking recycling. Reducing plastic. Restoring balance.
+        </p>
     </div>
+</section>
+
+<!-- IMAGE BANNER -->
+<div class="mb-5">
+    <img src="{{ url_for('static', filename='pic1.jpg') }}" 
+         class="img-fluid w-100 rounded shadow" 
+         style="max-height:500px; object-fit:cover;">
 </div>
 
+<!-- PROBLEM SECTION -->
+<section class="container text-center mb-5">
+    <h2 class="font-weight-bold mb-3">We Grew Up With the Wrong Recycling Idea</h2>
+    <h5 class="text-danger mb-4">Our health and our bay are in danger. Plastic is toxic.</h5>
 
+    <p class="text-muted">
+        Every piece of plastic ever produced is still here — in landfills, 
+        in the ocean, in the air we breathe, the water we drink, 
+        and even in the food we eat.
+    </p>
+</section>
+
+<!-- IMAGE SECTION -->
+<div class="container mb-5">
+    <img src="{{ url_for('static', filename='pic8.JPG') }}" 
+         class="img-fluid rounded shadow">
+</div>
+
+<!-- SOLUTION SECTION -->
+<section class="container text-center mb-5">
+    <h2 class="font-weight-bold mb-3 text-success">
+        So Let’s Act and Reduce Our Plastic Consumption
+    </h2>
+
+    <p class="text-muted">
+        Our goal is to ease the transition to plastic-free living in the greater LA area.
+        We offer sustainable alternatives and partner with brands ready to make a difference.
+    </p>
+
+    <p class="text-muted">
+        We keep it <strong>easy, clean, and accessible.</strong>  
+        Our first step is <strong>Refill@Home</strong> — a customizable box of locally made products 
+        in refillable containers.
+    </p>
+
+    <p class="text-muted">
+        Our ultimate goal is to open a physical store in LA 
+        for customers who care about reducing plastic waste.
+    </p>
+</section>
+
+<!-- PARTNERS SECTION -->
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="font-weight-bold mb-3">Our Partners</h2>
+        <p class="text-muted mb-4">
+            We curate suppliers who offer both great products and 
+            commitment to sustainable bulk packaging.
+        </p>
+
+        <h5 class="mb-4"><strong>Our partners meet 4 key criteria:</strong></h5>
+
+        <div class="row justify-content-center">
+            <div class="col-md-3 mb-3">
+                <div class="p-3 bg-white shadow-sm rounded h-100">
+                    🌱 Sustainable materials & ingredients
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="p-3 bg-white shadow-sm rounded h-100">
+                    ⭐ High quality products
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="p-3 bg-white shadow-sm rounded h-100">
+                    ♻ Plastic-free or bulk supplied
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="p-3 bg-white shadow-sm rounded h-100">
+                    📍 Local-first sourcing
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock content %}

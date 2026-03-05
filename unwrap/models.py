@@ -3,9 +3,20 @@ from unwrap import db, login_manager
 from flask_login import UserMixin
 from flask import flash
 
+
+
+
+
+
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,6 +25,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     cart = db.relationship('Cart', backref='buyer', lazy=True)
+    is_admin = db.Column(db.Boolean, default=False) 
+
+
+
 
     def add_to_cart(self,product_id):
         item_to_add = Cart(product_id=product_id, user_id=self.id)
@@ -26,6 +41,9 @@ class User(db.Model, UserMixin):
 
 
 
+
+
+
 class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -34,6 +52,13 @@ class Products(db.Model):
 
     def __repr__(self):
         return f"Products('{self.name}', '{self.price}')"
+
+
+
+
+
+
+
 
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
