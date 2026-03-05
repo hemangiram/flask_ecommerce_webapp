@@ -1,4 +1,4 @@
-# E-Commerce Web App Using Python Flask and SQLAlchemy.
+New web feature added# E-Commerce Web App Using Python Flask and SQLAlchemy.
 
 After completing my first computer science class through CS50 (EDX), I decided to build an e-commerce website
 using Python, Flask, SQLalchemy (and also HTML, CSS, Jinja).
